@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://127.0.0.1:5502/programming/16.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Todo List</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .todo-container {
+            background: white;
+            width: 400px;
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #taskInput {
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+            border-radius: 6px;
+
+            font-size: 16px;
+        }
+
+        #taskInput:focus {
+            outline: none;
+            border-color: #04AA6D;
+        }
+
+        .add-btn {
+            padding: 12px 18px;
+
+            border: none;
+            border-radius: 6px;
+
+            background: #04AA6D;
+            color: white;
+
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .add-btn:hover {
+            background: #038f5c;
+        }
+
+        #taskList {
+            margin-top: 25px;
+            list-style: none;
+        }
+
+        #taskList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: #f8f9fa;
+
+            padding: 12px 15px;
+
+            margin-bottom: 10px;
+
+            border-radius: 6px;
+
+            border: 1px solid #e5e5e5;
+
+            color: #333;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+
+            border: none;
+            border-radius: 5px;
+
+            padding: 7px 12px;
+
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #b02a37;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="todo-container">
+
+        <h1>Todo List</h1>
+
+        <div class="input-container">
+
+            <input type="text" placeholder="Enter task..." id="taskInput">
+
+            <button class="add-btn" onclick="addTask()">
+                Add
+            </button>
+
+        </div>
+
+        <ul id="taskList"></ul>
+
+    </div>
+
+
+    <script>
+
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+        function renderTask() {
+
+            let list = document.getElementById("taskList");
+
+            list.innerHTML = "";
+
+            tasks.forEach((task, index) => {
+
+                let li = document.createElement("li");
+
+                li.innerHTML = `
+                    ${task}
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteTask(${index})">
+                        Delete
+                    </button>
+                `;
+
+                list.appendChild(li);
+
+            });
+        }
+
+
+        function addTask() {
+
+            let input = document.getElementById("taskInput");
+
+            if (input.value === "") return;
+
+            tasks.push(input.value);
+
+            localStorage.setItem(
+                "tasks",
+                JSON.stringify(tasks)
+            );
+
+            input.value = "";
+
+            renderTask();
+        }
+
+
+        function deleteTask(index) {
+
+            tasks.splice(index, 1);
+
+            localStorage.setItem(
+                "tasks",
+                JSON.stringify(tasks)
+            );
+
+            renderTask();
+        }
+
+
+        renderTask();
+
+    </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+</body></html>

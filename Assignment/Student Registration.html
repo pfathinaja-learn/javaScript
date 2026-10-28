@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://127.0.0.1:5502/Assignment/a1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+
+    <style>
+        * {
+            box-sizing: border-boxl;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #166534;
+        }
+
+        .gender {
+            display: flex;
+            gap: 20px;
+        }
+
+        .gender label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gender input {
+            width: auto;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terms input {
+            width: auto;
+        }
+
+        .terms label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #166534;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #14532d;
+        }
+
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Student Registration</h1>
+
+        <form id="registrationForm">
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">Full Name</label>
+
+                <input type="text" id="name" placeholder="Enter your name">
+
+                <div id="nameError" class="error"></div>
+            </div>
+
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+
+                <input type="email" id="email" placeholder="Enter your email">
+
+                <div id="emailError" class="error"></div>
+            </div>
+
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+
+                <input type="text" id="phone" placeholder="Enter 10 digit phone number">
+
+                <div id="phoneError" class="error"></div>
+            </div>
+
+
+            <!-- Age -->
+            <div class="form-group">
+                <label for="age">Age</label>
+
+                <input type="number" id="age" placeholder="Enter your age">
+
+                <div id="ageError" class="error"></div>
+            </div>
+
+
+            <!-- Course -->
+            <div class="form-group">
+                <label for="course">Course</label>
+
+                <select id="course">
+
+                    <option value="">Select Course</option>
+                    <option value="mern">MERN Stack</option>
+                    <option value="python">Python Full Stack</option>
+                    <option value="java">Java Full Stack</option>
+                    <option value="data">Data Analytics</option>
+
+                </select>
+
+                <div id="courseError" class="error"></div>
+            </div>
+
+
+            <!-- Gender -->
+            <div class="form-group">
+
+                <label>Gender</label>
+
+                <div class="gender">
+
+                    <label>
+                        <input type="radio" name="gender" value="male">
+                        Male
+                    </label>
+
+                    <label>
+                        <input type="radio" name="gender" value="female">
+                        Female
+                    </label>
+
+                    <label>
+                        <input type="radio" name="gender" value="other">
+                        Other
+                    </label>
+
+                </div>
+
+                <div id="genderError" class="error"></div>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="form-group">
+
+                <label for="password">Password</label>
+
+                <input type="password" id="password" placeholder="Enter password">
+
+                <div id="passwordError" class="error"></div>
+
+            </div>
+
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <input type="password" id="confirmPassword" placeholder="Confirm password">
+
+                <div id="confirmPasswordError" class="error"></div>
+
+            </div>
+
+
+            <!-- Terms -->
+            <div class="form-group">
+
+                <div class="terms">
+
+                    <input type="checkbox" id="terms">
+
+                    <label for="terms">
+                        I agree to the Terms &amp; Conditions
+                    </label>
+
+                </div>
+
+                <div id="termsError" class="error"></div>
+
+            </div>
+
+
+            <!-- Submit -->
+            <button type="submit">
+                Register
+            </button>
+
+        </form>
+
+
+        <div id="successMessage" class="success"></div>
+
+    </div>
+
+
+    <script>
+
+        const form = document.getElementById("registrationForm");
+
+
+        form.addEventListener("submit", function(event) {
+
+            // Prevent page refresh
+            event.preventDefault();
+
+
+            // Get values
+            const name =
+                document.getElementById("name").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+            const age =
+                document.getElementById("age").value;
+
+            const course =
+                document.getElementById("course").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+            const terms =
+                document.getElementById("terms").checked;
+
+
+            // Get gender
+            const gender =
+                document.querySelector(
+                    'input[name="gender"]:checked'
+                );
+
+
+            // Clear previous errors
+            document.getElementById("nameError").textContent = "";
+            document.getElementById("emailError").textContent = "";
+            document.getElementById("phoneError").textContent = "";
+            document.getElementById("ageError").textContent = "";
+            document.getElementById("courseError").textContent = "";
+            document.getElementById("genderError").textContent = "";
+            document.getElementById("passwordError").textContent = "";
+            document.getElementById("confirmPasswordError").textContent = "";
+            document.getElementById("termsError").textContent = "";
+            document.getElementById("successMessage").textContent = "";
+
+
+            let isValid = true;
+
+
+            // Name validation
+            if (name === "") {
+
+                document.getElementById("nameError").textContent =
+                    "Name is required";
+
+                isValid = false;
+
+            } else if (name.length < 3) {
+
+                document.getElementById("nameError").textContent =
+                    "Name must contain at least 3 characters";
+
+                isValid = false;
+            }
+
+
+            // Email validation
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (email === "") {
+
+                document.getElementById("emailError").textContent =
+                    "Email is required";
+
+                isValid = false;
+
+            } else if (!emailPattern.test(email)) {
+
+                document.getElementById("emailError").textContent =
+                    "Enter a valid email";
+
+                isValid = false;
+            }
+
+
+            // Phone validation
+            const phonePattern = /^\d{10}$/;
+
+            if (phone === "") {
+
+                document.getElementById("phoneError").textContent =
+                    "Phone number is required";
+
+                isValid = false;
+
+            } else if (!phonePattern.test(phone)) {
+
+                document.getElementById("phoneError").textContent =
+                    "Phone number must contain 10 digits";
+
+                isValid = false;
+            }
+
+
+            // Age validation
+            if (age === "") {
+
+                document.getElementById("ageError").textContent =
+                    "Age is required";
+
+                isValid = false;
+
+            } else if (age < 18 || age > 60) {
+
+                document.getElementById("ageError").textContent =
+                    "Age must be between 18 and 60";
+
+                isValid = false;
+            }
+
+
+            // Course validation
+            if (course === "") {
+
+                document.getElementById("courseError").textContent =
+                    "Please select a course";
+
+                isValid = false;
+            }
+
+
+            // Gender validation
+            if (!gender) {
+
+                document.getElementById("genderError").textContent =
+                    "Please select your gender";
+
+                isValid = false;
+            }
+
+
+            // Password validation
+            if (password === "") {
+
+                document.getElementById("passwordError").textContent =
+                    "Password is required";
+
+                isValid = false;
+
+            } else if (password.length < 6) {
+
+                document.getElementById("passwordError").textContent =
+                    "Password must contain at least 6 characters";
+
+                isValid = false;
+            }
+
+
+            // Confirm password validation
+            if (confirmPassword === "") {
+
+                document.getElementById("confirmPasswordError").textContent =
+                    "Please confirm your password";
+
+                isValid = false;
+
+            } else if (password !== confirmPassword) {
+
+                document.getElementById("confirmPasswordError").textContent =
+                    "Passwords do not match";
+
+                isValid = false;
+            }
+
+
+            // Terms validation
+            if (!terms) {
+
+                document.getElementById("termsError").textContent =
+                    "Please accept the Terms & Conditions";
+
+                isValid = false;
+            }
+
+
+            // Final result
+            if (isValid) {
+
+                document.getElementById("successMessage").textContent =
+                    "Registration Successful!";
+
+                form.reset();
+            }
+
+        });
+
+    </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+</body></html>
